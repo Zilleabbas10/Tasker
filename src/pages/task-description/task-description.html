@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-navbar>
+     <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title> Task Description </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+<ion-card>
+  <ion-card-header>
+    {{taskdetails.name}}
+  </ion-card-header>
+  <ion-card-content>
+    <p><strong>Profession: </strong>{{taskdetails.profession}}</p>
+    <p><strong>Description: </strong>{{taskdetails.description}}</p>
+    <p><strong>Date: </strong>{{taskdetails.dueDate}}</p>
+    <ion-row>
+    	<ion-col col-9></ion-col>
+    	<ion-col col-3>
+    	<button ion-button class="apply-btn" *ngIf="apply_button == false" small item-left (click)="applyForjob()">Apply</button>
+    	<button ion-button class="apply-btn" *ngIf="apply_button == true" [disabled]="apply_button == true" small item-left (click)="applyForjob()">Applied</button></ion-col>
+    </ion-row>
+  </ion-card-content>
+</ion-card>
+
+</ion-content>

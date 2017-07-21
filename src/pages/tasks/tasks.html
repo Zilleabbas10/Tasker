@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title> {{pageName}} Tasks </ion-title>
+    <ion-buttons end>
+      <button ion-button navPop>
+        <ion-icon name="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <form [formGroup]="taskForm" (ngSubmit)="tasksForm()">
+    <ion-item no-padding>
+      <ion-label stacked>Name</ion-label>
+      <ion-input type="text" formControlName="name"></ion-input>
+    </ion-item>
+    <ion-item no-padding>
+      <ion-label stacked>Description</ion-label>
+      <ion-textarea type="text" formControlName="description" ></ion-textarea>
+    </ion-item>
+    <ion-item padding>
+      <ion-label stacked>Profession</ion-label>
+      <ion-select formControlName="profession">
+          <ion-option value="developer">Developer</ion-option>
+          <ion-option value="programmer">Programmer</ion-option>
+          <ion-option value="designer">Designer</ion-option>
+          <ion-option value="writer">Writer</ion-option>
+          <ion-option value="actor">Actor</ion-option>
+      </ion-select>
+    </ion-item>
+   	<ion-item no-padding>
+		<ion-label stacked>Due Date</ion-label>
+    <ion-input type="date" formControlName="date"></ion-input>
+	</ion-item>
+    <button ion-button type="submit" [disabled]="!taskForm.valid" full>{{btntxt}}</button>
+  </form>
+
+
+</ion-content>

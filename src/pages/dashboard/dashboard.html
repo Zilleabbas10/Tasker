@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-navbar>
+     <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title> Dashboard </ion-title>
+    <ion-buttons end>
+  <button ion-button icon-only (click)="addTask()">
+    <ion-icon name="add"></ion-icon>
+  </button>
+</ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+
+<ion-item>
+    <ion-label>Show Completed Tasks</ion-label>
+    <ion-toggle [(ngModel)]="completeTasks" (ionChange)="completedTasks($event)"></ion-toggle>
+</ion-item>
+
+<ion-item no-lines  *ngIf="taskList.length == 0">
+   <ion-label class="no-tasks" text-center>No Tasks</ion-label>
+</ion-item>
+
+<div class="wrapper" *ngIf="taskList.length > 0">
+
+      <ion-row class="head" text-center>
+        <ion-col col-4><strong>Name</strong></ion-col>
+        <ion-col col-4><strong>Profession</strong></ion-col>
+        <ion-col col-4><strong>Date</strong></ion-col>
+      </ion-row>
+<!-- <ion-list *ngFor="let task of tasks | async; let i = index; "> -->
+	<ion-list *ngFor="let task of taskList; let i = index; ">
+	  <ion-item-sliding #item *ngIf="task.status == completeTasks">
+	    <ion-item class="set-item">
+	      <ion-row text-center>
+	        <ion-col class="data" col-4>{{task.name}}</ion-col>
+	        <ion-col class="data" col-4>{{task.profession}}</ion-col>
+	        <ion-col col-4>{{task.dueDate}}</ion-col>
+	      </ion-row>
+	    </ion-item>
+
+	    <ion-item-options side="right">
+	        <button ion-button color="light" (click)="completeTask(task.$key)" *ngIf="task.status == false">
+	            <ion-icon name="checkmark"></ion-icon>
+	            Complete
+	      </button>
+	      <button ion-button color="light" *ngIf="task.status == true" [disabled]="task.status == true">
+	            <ion-icon name="checkmark"></ion-icon>
+	            Completed
+	      </button>
+	        <button ion-button (click)="updateTask(task.$key, task)" [disabled]="task.status == true">
+	            <ion-icon name="md-create"></ion-icon>
+	            Edit
+	      </button>
+	        <button ion-button color="danger" (click)="deleteTask(task.$key, task.name, task.descripton, task.dueDate)">
+	            <ion-icon name="trash"></ion-icon>
+	            Delete
+	      </button>
+	    </ion-item-options>
+	  </ion-item-sliding>
+	</ion-list>
+</div>
+
+</ion-content>

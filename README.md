@@ -24,3 +24,37 @@ $ ionic cordova run ios
 
 Substitute ios for android if not on a Mac.
 
+Firebase Configuration:
+
+1. Create new project
+2. add angular fire2 library by -> npm install firebase angularfire2 --save
+3. then write the following code in module.ts file
+
+
+// Import the AF2 Module
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+
+// AF2 Settings
+export const firebaseConfig = {
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",
+  storageBucket: "",
+  messagingSenderId: ""
+}; //get this by creating new project in firebase and copy its web app settings 
+
+add this is imports array in module.ts
+
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireAuthModule,
+    AngularFireDatabaseModule
+
+<—————— all for firebase setup——————->
+
+Authentication with firebase :
+
+1. open project you created on fcm and go to its authentication tab.
+2. In authentication tab, enable lignin-method
+

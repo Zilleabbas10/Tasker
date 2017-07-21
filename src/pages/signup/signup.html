@@ -1,0 +1,34 @@
+
+<ion-header>
+  <ion-navbar>
+     <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title> SIGN UP</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <div text-center class="textHead">
+    <h2> Welcome! </h2>
+    <p>Let's get you started</p>
+  </div>
+
+
+  <form [formGroup]="signup" (ngSubmit)="signUpForm()">
+    <ion-item no-padding>
+      <ion-label stacked>Email</ion-label>
+      <ion-input type="email" formControlName="email"></ion-input>
+    </ion-item>
+    <ion-item no-padding>
+      <ion-label stacked>Password</ion-label>
+      <ion-input type="password" formControlName="password"></ion-input>
+    </ion-item>
+    <button ion-button type="submit" [disabled]="!signup.valid" full>Sign Up</button>
+  </form>
+
+  <p text-center>By clicking "Sign Up" you are indicating that you have read and agree to the <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a></p>
+
+</ion-content>

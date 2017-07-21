@@ -1,0 +1,27 @@
+<ion-header>
+    <ion-navbar>
+     <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title> SIGN IN</ion-title>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <form [formGroup]="signin" (ngSubmit)="signinForm()">
+    <ion-item no-padding>
+      <ion-label stacked>Email</ion-label>
+      <ion-input type="email" formControlName="email"></ion-input>
+    </ion-item>
+    <ion-item no-padding>
+      <ion-label stacked>Password</ion-label>
+      <ion-input type="password" formControlName="password"></ion-input>
+    </ion-item>
+    <button ion-button type="submit" [disabled]="!signin.valid" full>{{btnTxt}}</button>
+  </form>
+
+  <a class="btn_fpas" href="#" (click)="forgotPassword()" text-center>Forgotten Password?</a>
+
+</ion-content>

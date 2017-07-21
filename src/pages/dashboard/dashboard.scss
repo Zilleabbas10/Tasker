@@ -1,0 +1,76 @@
+page-dashboard {
+	
+		  .list-header{
+    background-color: #eaeaea;
+    border-bottom: none;
+    margin-top: 1em;
+  }
+
+  hr {
+  height: 2px !important;
+  background-color: lightgray !important;
+}
+
+  
+.btn-small{
+    font-size: 1rem;
+    height: 1.8em;
+    padding: 6px;
+    margin: 0px;
+}
+
+.btn-small-right {
+  float: center;
+}
+
+.button-small {
+	margin-top: 15px;
+}
+
+.colors{
+  height: 20px;
+  width: 100%;
+  border: 1px solid lightgray;
+}
+
+.no-tasks {
+    color: #777272;
+    font-weight: 600;
+}
+
+
+.data {
+    border-right: 1px solid #867b7b;
+}
+
+.wrapper{
+    margin-top: 10px;
+}
+
+.list-md{
+    margin: 0px;
+}
+
+.item-md{
+    font-size: 1.3rem;
+}
+
+.label-md{
+  margin: 0px;
+}
+
+.list-md ion-item-sliding {
+    margin-top: 10px;
+    background-color: #867b7b;
+    border-bottom: 1px solid #867b7b;
+}
+
+.head{
+    margin-top: 10px;
+}
+
+.set-item{
+  padding: 0px;
+}
+
+}
