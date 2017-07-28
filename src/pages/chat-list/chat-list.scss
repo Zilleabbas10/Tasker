@@ -2,4 +2,34 @@ page-chat-list {
 	.list > .item-block:first-child {
     border-top: none;
 }
+
+.list{
+	margin: -1px 0 20px;
+    border-radius: 6px;
+}
+
+/* .list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
+    border-bottom: 0.55px solid #c8c5d4;
+    background: rgba(143, 144, 146, 0.28);
+    border-radius: 6px;
+} */
+
+.list > .item-block:last-child, .list > .item-wrapper:last-child .item-block {
+    border-bottom: 0.55px solid #c8c5d4;
+    background: rgba(143, 144, 146, 0.28);
+    border-radius: 6px;
+}
+
+.label{
+	color: #fff;
+}
+b, strong {
+    color: #fff;
+}
+.item h3{
+    color: #fff;
+}
+.set-whole{
+  padding: 10px;
+}
 }

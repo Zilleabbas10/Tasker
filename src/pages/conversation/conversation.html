@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-navbar color="header">
+     <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title> {{details.task_title}} </ion-title>
+<!--     <ion-buttons end>
+      <button ion-button (click)="sendPicture()"><ion-icon name="image" ></ion-icon> Send Image</button>
+    </ion-buttons> -->
+  </ion-navbar>
+</ion-header>
+
+
+
+<ion-content padding class="chat-view" id="chat-view">
+
+      <ion-row *ngIf="!(chats)">
+      <ion-col col-5></ion-col>
+      <ion-col col-2><ion-spinner class="text-center" item-right></ion-spinner></ion-col>
+      <ion-col col-5></ion-col>
+      </ion-row>
+
+<!--   <div class="messages">
+      <div class="message" *ngFor="let chat of chats | async" [ngClass]="{'me': user_id === chat.from}">
+          <span *ngIf="chat.message">{{chat.message}}{{chat.from}}</span>
+          <img *ngIf="chat.picture" src="{{chat.picture}}" class="picture">
+      </div>
+  </div> -->
+	<div class="messages">
+	  	<div class="message" *ngFor="let chat of chats | async">
+          <span *ngIf="user_id !== chat.from" class="setleft">{{chat.message}}<!-- {{chat.from}} --></span>
+	        <span *ngIf="user_id === chat.from" class="setRight">{{chat.message}}<!-- {{chat.from}} --></span>
+	        <img *ngIf="chat.picture" src="{{chat.picture}}" class="picture">
+	  	</div>
+	</div>
+
+</ion-content>
+
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-row *ngIf="!(chats)">
+      <ion-col col-5></ion-col>
+      <ion-col col-2><ion-spinner class="text-center" item-right></ion-spinner></ion-col>
+      <ion-col col-5></ion-col>
+    </ion-row>
+      
+     <ion-row [hidden]="!chats"> 
+      <ion-col col-9 >
+          <ion-input type="text"  placeholder="Enter Message"
+              [(ngModel)]="message">
+          </ion-input>
+      </ion-col>
+      <ion-col col-3>
+          <button ion-button color="header" full (click)="sendMessage()"><ion-icon name="send"></ion-icon></button>
+      </ion-col>
+    </ion-row>    
+  </ion-toolbar>
+</ion-footer>

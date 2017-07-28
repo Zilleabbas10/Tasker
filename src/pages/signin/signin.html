@@ -1,27 +1,32 @@
+<!-- 
 <ion-header>
-    <ion-navbar>
+  <ion-navbar color="header">
      <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-        <ion-title> SIGN IN</ion-title>
-    </ion-navbar>
+    <ion-title text-center> SIGN IN</ion-title>
+  </ion-navbar>
 </ion-header>
-
-
-<ion-content padding>
-
-  <form [formGroup]="signin" (ngSubmit)="signinForm()">
-    <ion-item no-padding>
-      <ion-label stacked>Email</ion-label>
-      <ion-input type="email" formControlName="email"></ion-input>
-    </ion-item>
-    <ion-item no-padding>
-      <ion-label stacked>Password</ion-label>
-      <ion-input type="password" formControlName="password"></ion-input>
-    </ion-item>
-    <button ion-button type="submit" [disabled]="!signin.valid" full>{{btnTxt}}</button>
-  </form>
-
-  <a class="btn_fpas" href="#" (click)="forgotPassword()" text-center>Forgotten Password?</a>
-
+ -->
+<ion-content class="background">
+  <ion-card>
+    <ion-card-header>
+      SIGN IN
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list no-line> 
+          <form [formGroup]="signin" (ngSubmit)="signinForm()">
+              <ion-item style="margin-top: 10px;">
+                <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
+              </ion-item>
+              <ion-item style="margin-top: 15px;">
+                <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
+              </ion-item>
+              <button ion-button block outline color="light" [disabled]="!signin.valid" style="margin-top: 15px;">{{btnTxt}}</button>
+        </form>
+              <a style="margin-top: 15px;" (click)="forgotPassword()">Forgot your login detail? <b>Get help signing in</b></a>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <button class="bottom" ion-button clear full color="light" (click)="signUp()">Don't have an account? Sign up</button>
 </ion-content>

@@ -1,0 +1,59 @@
+page-conversation {
+/* .chat-view {
+  .messages {
+    width: 100%;
+    position: absolute;
+    .message {
+      width: 70%;
+      padding: 5px 10px;
+      background: #3F51B5;
+      color: #fff;
+      border-radius: 5px;
+      margin: 5px;
+      float: left;
+    }
+    .message.me {
+      float: right;
+      background: #fff;
+      border: 1px solid #3F51B5;
+      color: #222;
+      text-align: right;
+    } 
+  }
+} */
+
+.text-center {
+  text-align: center;
+}
+
+.messages {
+  padding: 0px 0px 10px 0px;
+}
+
+span.setleft {
+    padding: 10px;
+    float: left;
+    text-align: left;
+    color: #fff;
+    background: rgb(70, 130, 197);
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    margin-right: 60px;
+    width: 80%;
+}
+
+span.setRight {
+    background: rgba(248, 248, 248, 0.85);
+    padding: 10px;
+    float: right;
+    text-align: right;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    margin-left: 60px;
+    width: 80%;
+
+}
+
+}

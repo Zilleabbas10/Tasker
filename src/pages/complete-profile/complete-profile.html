@@ -1,6 +1,6 @@
 
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="header">
      <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -9,24 +9,33 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
 
-  <form [formGroup]="completeProfileForm" (ngSubmit)="completeProfile()">
-    <ion-item no-padding>
-      <ion-label stacked>Name</ion-label>
-      <ion-input type="text" formControlName="name"></ion-input>
-    </ion-item>
-    <ion-item padding>
-      <ion-label stacked>Profession</ion-label>
-      <ion-select formControlName="profession">
-          <ion-option value="developer">Developer</ion-option>
-          <ion-option value="programmer">Programmer</ion-option>
-          <ion-option value="designer">Designer</ion-option>
-          <ion-option value="writer">Writer</ion-option>
-          <ion-option value="actor">Actor</ion-option>
-      </ion-select>
-    </ion-item>
-    <button ion-button type="submit" [disabled]="!completeProfileForm.valid" full>Save</button>
-  </form>
+ 
+
+      <ion-card>
+    <ion-card-header>
+      Complete your profile here
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list no-line> 
+          <form [formGroup]="completeProfileForm" (ngSubmit)="completeProfile()">
+              <ion-item style="margin-top: 10px;">
+                <ion-input type="text" placeholder="Name" formControlName="name"></ion-input>
+              </ion-item>
+              <ion-item style="margin-top: 15px;">
+                  <ion-select  placeholder="Select your profession" formControlName="profession">
+                      <ion-option value="developer">Developer</ion-option>
+                      <ion-option value="programmer">Programmer</ion-option>
+                      <ion-option value="designer">Designer</ion-option>
+                      <ion-option value="writer">Writer</ion-option>
+                      <ion-option value="actor">Actor</ion-option>
+                  </ion-select>
+              </ion-item>
+              <button ion-button block outline color="light" [disabled]="!completeProfileForm.valid"  style="margin-top: 15px;">Save</button>
+        </form>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 
 </ion-content>

@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="header">
      <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -10,7 +10,30 @@
 
 <ion-content padding>
 
+<ion-item no-lines class="no-tasks"  *ngIf="taskList.length == 0">
+   <ion-label text-center>No Tasks</ion-label>
+</ion-item>
 
+<div class="wrapper" *ngIf="taskList.length > 0">
+
+<ion-card  *ngFor="let task of taskList; let i = index; ">
+<!-- <div class="set-head"></div> -->
+<!--   <ion-card-header>
+    Ionic Development
+  </ion-card-header> -->
+  <ion-card-content (click)="showDetails(task)">
+      <ion-row>
+    	<ion-col col-9><h2><strong>{{task.name}}</strong></h2> <p>Created date: {{task.dueDate}}</p></ion-col>
+    	<ion-col col-3>
+    	<button ion-button class="apply-btn" color="header" small item-left (click)="showDetails(task)">View</button>
+    	</ion-col>
+    </ion-row>
+  </ion-card-content>
+</ion-card>
+
+</div>
+
+<!-- 
 <ion-item no-lines  *ngIf="taskList.length == 0">
    <ion-label class="no-tasks" text-center>No Tasks</ion-label>
 </ion-item>
@@ -22,7 +45,7 @@
         <ion-col col-4><strong>Profession</strong></ion-col>
         <ion-col col-4><strong>Date</strong></ion-col>
       </ion-row>
-<!-- <ion-list *ngFor="let task of tasks | async; let i = index; "> -->
+<ion-list *ngFor="let task of tasks | async; let i = index; "> (For another use)
 	<ion-list *ngFor="let task of taskList; let i = index; ">
 	  <ion-item-sliding #item *ngIf="task.status == completeTasks">
 	    <ion-item class="set-item" (click)="showDetails(task)">
@@ -49,6 +72,6 @@
 	    </ion-item-options>
 	  </ion-item-sliding>
 	</ion-list>
-</div>
+</div> -->
 
 </ion-content>

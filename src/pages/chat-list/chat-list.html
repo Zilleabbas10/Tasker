@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="header">
      <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -11,23 +11,45 @@
 
 <ion-content padding>
 
-<ion-item no-lines  *ngIf="FinalUserList.length == 0">
-   <ion-label class="no-tasks" text-center>No Chats</ion-label>
+<div class="set-whole">
+
+<ion-item no-lines  class="no-tasks"  *ngIf="appliedUserList.length == 0 && appliedList.length == 0">
+   <ion-label text-center>No Chats</ion-label>
 </ion-item>
 
-<div class="wrapper" *ngIf="FinalUserList.length > 0">
+<div class="wrapper" *ngIf="appliedUserList.length > 0">
 
-<ion-list *ngFor="let chat of FinalUserList; let i = index; ">
-  <ion-item>
+<ion-list *ngFor="let chatUser of appliedUserList; let i = index; ">
+  <ion-item (click)="startConversation(chatUser, 'task_owner')">
     <ion-avatar item-start>
       <img src="assets/img/user.jpeg">
     </ion-avatar>
-    <h2>{{chat.name}}</h2>
-    <h3>{{chat.profession}}</h3>
-    <p>I've had a pretty messed up day. If we just...</p>
+    <!-- <h2 *ngIf="chatUser.status == 1">{{chatUser.taskowner_user_name}}</h2> -->
+    <h2>{{chatUser.applied_user_name}} <strong> (Owner)</strong></h2>
+    <h3>Task: {{chatUser.task_title}}</h3>
+    <!-- <p>I've had a pretty messed up day. If we just...</p> -->
   </ion-item>
 </ion-list>
 
 </div>
+
+<div class="wrapper" *ngIf="appliedList.length > 0">
+
+<ion-list *ngFor="let chatuser of appliedList; let i = index; ">
+  <ion-item (click)="startConversation(chatuser, 'task_user')" no-lines>
+    <ion-avatar item-start>
+      <img src="assets/img/user.jpeg">
+    </ion-avatar>
+    <!-- <h2 *ngIf="chatUser.status == 1">{{chatUser.taskowner_user_name}}</h2> -->
+    <h2>{{chatuser.taskowner_user_name}}<strong> (Applicant)</strong></h2>
+    <h3>Task: {{chatuser.task_title}}</h3>
+    <!-- <p>I've had a pretty messed up day. If we just...</p> -->
+  </ion-item>
+</ion-list>
+
+</div>
+
+</div>
+
 
 </ion-content>

@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="header">
      <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -13,6 +13,7 @@
 </ion-header>
 
 <ion-content padding>
+<div class="set-whole">
 
 
 <ion-item>
@@ -20,30 +21,28 @@
     <ion-toggle [(ngModel)]="completeTasks" (ionChange)="completedTasks($event)"></ion-toggle>
 </ion-item>
 
+<!-- 
 <ion-item no-lines  *ngIf="taskList.length == 0">
    <ion-label class="no-tasks" text-center>No Tasks</ion-label>
 </ion-item>
 
+
 <div class="wrapper" *ngIf="taskList.length > 0">
 
-      <ion-row class="head" text-center>
-        <ion-col col-4><strong>Name</strong></ion-col>
-        <ion-col col-4><strong>Profession</strong></ion-col>
-        <ion-col col-4><strong>Date</strong></ion-col>
-      </ion-row>
-<!-- <ion-list *ngFor="let task of tasks | async; let i = index; "> -->
-	<ion-list *ngFor="let task of taskList; let i = index; ">
-	  <ion-item-sliding #item *ngIf="task.status == completeTasks">
-	    <ion-item class="set-item">
-	      <ion-row text-center>
-	        <ion-col class="data" col-4>{{task.name}}</ion-col>
-	        <ion-col class="data" col-4>{{task.profession}}</ion-col>
-	        <ion-col col-4>{{task.dueDate}}</ion-col>
-	      </ion-row>
-	    </ion-item>
+<ion-card  *ngFor="let task of taskList; let i = index; ">
+  <ion-card-content>
+  <ion-item-sliding #item *ngIf="task.status == completeTasks">
+  <ion-item class="set-item">
+      <ion-row>
+    	<ion-col col-12><h2><strong>{{task.name}}</strong></h2> <p>Created date: {{task.dueDate}}</p></ion-col>
+    	<ion-col col-3>
+    	<button ion-button class="apply-btn" color="header" small item-left (click)="showDetails(task)">View</button>
+    	</ion-col>
+    </ion-row>
+    </ion-item>
 
 	    <ion-item-options side="right">
-	        <button ion-button color="light" (click)="completeTask(task.$key)" *ngIf="task.status == false">
+	        <button ion-button color="light" (click)="completeTask(task.$key, task.name, task.description, task.dueDate)" *ngIf="task.status == false">
 	            <ion-icon name="checkmark"></ion-icon>
 	            Complete
 	      </button>
@@ -55,13 +54,103 @@
 	            <ion-icon name="md-create"></ion-icon>
 	            Edit
 	      </button>
-	        <button ion-button color="danger" (click)="deleteTask(task.$key, task.name, task.descripton, task.dueDate)">
+	        <button ion-button color="danger" (click)="deleteTask(task.$key, task.name, task.description, task.dueDate)">
+	            <ion-icon name="trash"></ion-icon>
+	            Delete
+	      </button>
+	    </ion-item-options>
+	  </ion-item-sliding>
+  </ion-card-content>
+</ion-card>
+
+</div> -->
+
+
+
+
+<ion-item no-lines class="no-tasks" *ngIf="taskList.length == 0">
+   <ion-label  text-center>No Tasks</ion-label>
+</ion-item>
+
+<div class="wrapper" *ngIf="taskList.length > 0">
+
+<!-- <ion-list *ngFor="let task of taskList | async; let i = index; "> (For another use) -->
+	<ion-list *ngFor="let task of taskList; let i = index; ">
+	  <ion-item-sliding #item *ngIf="task.status == completeTasks">
+	    <ion-item class="set-item">
+	      	<ion-row class="set-body">
+				<ion-col col-12><h2><strong>{{task.name}}</strong></h2> <p>Created date: {{task.dueDate}}</p></ion-col>
+			</ion-row>
+	    </ion-item>
+
+	    <ion-item-options side="right">
+	        <button ion-button color="light" (click)="completeTask(task.$key, task.name, task.description, task.dueDate)" *ngIf="task.status == false">
+	            <ion-icon name="checkmark"></ion-icon>
+	            Complete
+	      </button>
+	      <button ion-button color="light" *ngIf="task.status == true" [disabled]="task.status == true">
+	            <ion-icon name="checkmark"></ion-icon>
+	            Completed
+	      </button>
+	        <button ion-button color="header" (click)="updateTask(task.$key, task)" [disabled]="task.status == true">
+	            <ion-icon name="md-create"></ion-icon>
+	            Edit
+	      </button>
+	        <button ion-button color="danger" (click)="deleteTask(task.$key, task.name, task.description, task.dueDate)">
 	            <ion-icon name="trash"></ion-icon>
 	            Delete
 	      </button>
 	    </ion-item-options>
 	  </ion-item-sliding>
 	</ion-list>
+</div>
+
+
+
+<!-- 
+<ion-item no-lines  *ngIf="taskList.length == 0">
+   <ion-label class="no-tasks" text-center>No Tasks</ion-label>
+</ion-item>
+
+<div class="wrapper" *ngIf="taskList.length > 0">
+
+      <ion-row class="head" text-center>
+        <ion-col col-4><strong>Name</strong></ion-col>
+        <ion-col col-4><strong>Profession</strong></ion-col>
+        <ion-col col-4><strong>Date</strong></ion-col>
+      </ion-row>
+<ion-list *ngFor="let task of taskList | async; let i = index; "> (For another use)
+	<ion-list *ngFor="let task of taskList; let i = index; ">
+	  <ion-item-sliding #item *ngIf="task.status == completeTasks">
+	    <ion-item class="set-item">
+	      <ion-row text-center>
+	        <ion-col class="data" col-4>{{task.name}}</ion-col>
+	        <ion-col class="data" col-4>{{task.profession}}</ion-col>
+	        <ion-col col-4>{{task.dueDate}}</ion-col>
+	      </ion-row>
+	    </ion-item>
+
+	    <ion-item-options side="right">
+	        <button ion-button color="light" (click)="completeTask(task.$key, task.name, task.description, task.dueDate)" *ngIf="task.status == false">
+	            <ion-icon name="checkmark"></ion-icon>
+	            Complete
+	      </button>
+	      <button ion-button color="light" *ngIf="task.status == true" [disabled]="task.status == true">
+	            <ion-icon name="checkmark"></ion-icon>
+	            Completed
+	      </button>
+	        <button ion-button (click)="updateTask(task.$key, task)" [disabled]="task.status == true">
+	            <ion-icon name="md-create"></ion-icon>
+	            Edit
+	      </button>
+	        <button ion-button color="danger" (click)="deleteTask(task.$key, task.name, task.description, task.dueDate)">
+	            <ion-icon name="trash"></ion-icon>
+	            Delete
+	      </button>
+	    </ion-item-options>
+	  </ion-item-sliding>
+	</ion-list>
+</div> -->
 </div>
 
 </ion-content>

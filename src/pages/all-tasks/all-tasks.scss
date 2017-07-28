@@ -32,8 +32,11 @@ page-all-tasks {
   border: 1px solid lightgray;
 }
 
+
 .no-tasks {
-    color: #777272;
+  background-color: transparent;
+  background: transparent;
+    color: #fff;
     font-weight: 600;
 }
 
@@ -70,6 +73,15 @@ page-all-tasks {
 
 .set-item{
   padding: 0px;
+}
+
+.set-head{
+  float: right;
+  padding: 8px;
+}
+
+.button-small{
+  margin-top: 9px;
 }
 
 }

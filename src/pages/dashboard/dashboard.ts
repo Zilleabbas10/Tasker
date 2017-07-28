@@ -39,22 +39,15 @@ export class DashboardPage {
               equalTo: user.uid
         }
       });
+
+          this.loading = this.loadingctrl.create({
+            content: 'Loading...',
+          });
+          this.loading.present();
+
       this.getUser(this.user); // function run to get value from (this.user observeable) because cant directly access its values
     }
   });
-
-/*    this.tasks = afDb.list('/tasks');
-    this.getTasks(this.tasks);*/
-/*  	this.storage.get('data').then((val) => {
-      this.user_id = val.uid;
-      this.tasks = afDb.list('/tasks', {
-            query: {
-              orderByChild: 'user_id',
-              equalTo: this.user_id
-        }
-      });
-    this.getTasks(this.tasks);
-    });*/
   }
 
   ionViewDidLoad() {
@@ -78,10 +71,7 @@ export class DashboardPage {
         }
       });
 
-  	this.loading = this.loadingctrl.create({
-		content: 'Loading...',
-	});
-	this.loading.present();
+
 
 	this.tasks.subscribe( (snapshots) => {
     this.loading.dismissAll();
@@ -106,47 +96,6 @@ updateTask(taskId, task){
    updateTaskModal.present();
 }
 
-/*    updateTask(taskId, name, description, date) {
-      console.log(taskId, date);
-    let prompt = this.alertCtrl.create({
-      title: 'Update Task',
-      inputs: [
-        {
-          name: 'name',
-          value: name,
-          placeholder: 'Name'
-        },
-        {
-          name: 'description',
-          value: description,
-          placeholder: 'Description'
-        },
-        {
-          name: 'date',
-          type: 'date',
-          value: date,
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: data => {
-          }
-        },
-        {
-          text: 'Save',
-          handler: data => {
-          this.tasks.update(taskId, {
-            name: data.name,
-            descripton: data.description,
-            dueDate: data.date
-          });
-          }
-        }
-      ]
-    });
-    prompt.present();
-  }*/
 
     deleteTask(taskId, name, description, date) {
 
@@ -171,7 +120,30 @@ updateTask(taskId, task){
     confirm.present();
   }
 
-  completeTask(taskId){ //complete button functionality which convert task from incomplete to complete
+
+      completeTask(taskId, name, description, date) {
+
+    let confirm = this.alertCtrl.create({
+      title: 'Confirm Complete',
+      message: 'Do you want to complete Task ?? <br><strong>Name:</strong>&nbsp;' + name + '&nbsp;<br><strong>Description:</strong>&nbsp;' + description + '&nbsp;<br><strong>Due Date:</strong>&nbsp;' + date,
+      buttons: [
+        {
+          text: 'Disagree',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Agree',
+          handler: () => {
+        this.savecompleteTask(taskId);
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  savecompleteTask(taskId){ //complete button functionality which convert task from incomplete to complete
   	console.log('Complete Function');
            this.tasks.update(taskId, {
             status: true

@@ -1,6 +1,6 @@
 
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="header">
      <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -9,26 +9,32 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
 
-  <div text-center class="textHead">
-    <h2> Welcome! </h2>
-    <p>Let's get you started</p>
-  </div>
+    <ion-card>
+    <ion-card-header>
+        <div text-center class="textHead">
+          <h2 style="color: #fff;"> Welcome! </h2>
+          <p>Let's get you started</p>
+        </div>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list no-line> 
 
 
-  <form [formGroup]="signup" (ngSubmit)="signUpForm()">
-    <ion-item no-padding>
-      <ion-label stacked>Email</ion-label>
-      <ion-input type="email" formControlName="email"></ion-input>
-    </ion-item>
-    <ion-item no-padding>
-      <ion-label stacked>Password</ion-label>
-      <ion-input type="password" formControlName="password"></ion-input>
-    </ion-item>
-    <button ion-button type="submit" [disabled]="!signup.valid" full>Sign Up</button>
-  </form>
+          <form [formGroup]="signup" (ngSubmit)="signUpForm()">
+              <ion-item style="margin-top: 10px;">
+                <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
+              </ion-item>
+              <ion-item style="margin-top: 15px;">
+                <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
+              </ion-item>
+              <button ion-button block outline color="light" [disabled]="!signup.valid" style="margin-top: 15px;">Sign up</button>
+        </form>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 
-  <p text-center>By clicking "Sign Up" you are indicating that you have read and agree to the <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a></p>
+    <p class="links" text-center>By clicking "Sign Up" you are indicating that you have read and agree to the <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a></p>
 
 </ion-content>

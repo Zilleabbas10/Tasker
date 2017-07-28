@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Storage } from '@ionic/storage';
 import { CommonFunctions } from '../../providers/common';
@@ -13,8 +13,13 @@ export class TaskDescriptionPage {
 
 	public taskdetails: any;
   	public apply: FirebaseListObservable<any[]>;
-  	public user_applied: FirebaseListObservable<any[]>;
-  	public user_id: string;
+    public user_applied: FirebaseListObservable<any[]>;
+    public getApplyingUserdata: FirebaseObjectObservable<object>;
+  	public getTaskOwnerDataName: FirebaseObjectObservable<object>;
+    public user_id: string;
+    public user_name: string;
+    public getTaskOwnerName: string;
+  	public user_profession: string;
   	public count_tasks: number;
   	public apply_button: boolean = false; // not applied yet for task
   	public getCurrentDateTime:  string;
@@ -37,7 +42,7 @@ export class TaskDescriptionPage {
       this.user_id = user.uid;
       this.user_applied = this.afDb.list('/apply_jobs', {
             query: {
-              orderByChild: 'user_id',
+              orderByChild: 'applied_user_id',
               equalTo: this.user_id
         }
       });
@@ -110,7 +115,17 @@ console.log(this.finalCurrentDate )
 
   applyForjob(){
   	if(this.count_tasks < 5){
-  	  	this.apply.push({task_id: this.taskdetails.$key, user_id: this.user_id, assigned: false, apply_date: this.finalCurrentDate}).then( (res) => { 
+      this.getApplyingUserdata = this.afDb.object('/users/' + this.user_id);
+      this.getApplyingUserdata.subscribe( (userdata: any) => {
+        this.user_name = userdata.name;
+        this.user_profession = userdata.profession;
+        console.log(this.user_name, this.user_profession);
+
+        this.getTaskOwnerDataName = this.afDb.object('/users/' + this.taskdetails.user_id);
+        this.getTaskOwnerDataName.subscribe( (userdata: any) => {
+        this.getTaskOwnerName = userdata.name;
+      
+  	  	this.apply.push({task_id: this.taskdetails.$key, task_title: this.taskdetails.name, applied_user_id: this.user_id, applied_user_name: this.user_name, applied_user_profession: this.user_profession, taskowner_user_id: this.taskdetails.user_id, taskowner_user_name: this.getTaskOwnerName, assigned: false, apply_date: this.finalCurrentDate, status: 0}).then( (res) => { 
   		if(res.path.o[1] != undefined || res.path.o[1] != null ){
   			this.commomAlerts.alert('Success', 'Applied for task Successfully');
         this.navCtrl.pop();
@@ -121,6 +136,10 @@ console.log(this.finalCurrentDate )
 	  	},(error) => {
 	        console.log(error);
 	    });
+
+      })
+      })
+
   	  }else{
   	  	this.commomAlerts.alert('Warning', 'You are already reached your full limit. Delete existing tasks to proceed forward.');
   	  }

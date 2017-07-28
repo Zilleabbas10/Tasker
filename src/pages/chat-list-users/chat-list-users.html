@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+     <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title> Chats For Applied Tasks </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+<ion-item no-lines  *ngIf="appliedUserList.length == 0">
+   <ion-label class="no-tasks" text-center>No Chats</ion-label>
+</ion-item>
+
+<div class="wrapper" *ngIf="appliedUserList.length > 0">
+
+<ion-list *ngFor="let chatUser of appliedUserList; let i = index; ">
+  <ion-item (click)="startConversation(chatUser)" no-lines>
+    <ion-avatar item-start>
+      <img src="assets/img/user.jpeg">
+    </ion-avatar>
+    <!-- <h2 *ngIf="chatUser.status == 1">{{chatUser.taskowner_user_name}}</h2> -->
+    <h2>{{chatUser.taskowner_user_name}}</h2>
+    <h3>Task: {{chatUser.task_title}}</h3>
+    <!-- <p>I've had a pretty messed up day. If we just...</p> -->
+  </ion-item>
+</ion-list>
+
+</div>
+
+
+</ion-content>

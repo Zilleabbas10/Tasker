@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="header">
     <ion-title> {{pageName}} Tasks </ion-title>
     <ion-buttons end>
       <button ion-button navPop>
@@ -10,20 +10,23 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
 
+ <ion-card>
+    <ion-card-header text-center>
+      Enter new task details
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list no-line> 
   <form [formGroup]="taskForm" (ngSubmit)="tasksForm()">
-    <ion-item no-padding>
-      <ion-label stacked>Name</ion-label>
-      <ion-input type="text" formControlName="name"></ion-input>
+    <ion-item style="margin-top: 10px;">
+      <ion-input type="text" placeholder="Name" formControlName="name"></ion-input>
     </ion-item>
-    <ion-item no-padding>
-      <ion-label stacked>Description</ion-label>
-      <ion-textarea type="text" formControlName="description" ></ion-textarea>
+    <ion-item style="margin-top: 15px;">
+      <ion-textarea type="text" rows="10" placeholder="Description" formControlName="description" ></ion-textarea>
     </ion-item>
-    <ion-item padding>
-      <ion-label stacked>Profession</ion-label>
-      <ion-select formControlName="profession">
+    <ion-item style="margin-top: 15px;">
+      <ion-select placeholder="Select profession" formControlName="profession">
           <ion-option value="developer">Developer</ion-option>
           <ion-option value="programmer">Programmer</ion-option>
           <ion-option value="designer">Designer</ion-option>
@@ -31,12 +34,14 @@
           <ion-option value="actor">Actor</ion-option>
       </ion-select>
     </ion-item>
-   	<ion-item no-padding>
-		<ion-label stacked>Due Date</ion-label>
+<!--    	<ion-item>
     <ion-input type="date" formControlName="date"></ion-input>
-	</ion-item>
-    <button ion-button type="submit" [disabled]="!taskForm.valid" full>{{btntxt}}</button>
+	</ion-item> -->
+    <button ion-button block outline color="light" type="submit" [disabled]="!taskForm.valid" style="margin-top: 15px;">{{btntxt}}</button>
   </form>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 
 
 </ion-content>

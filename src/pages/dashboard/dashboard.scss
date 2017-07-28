@@ -34,7 +34,9 @@ page-dashboard {
 }
 
 .no-tasks {
-    color: #777272;
+  background-color: transparent;
+  background: transparent;
+    color: #fff;
     font-weight: 600;
 }
 
@@ -71,6 +73,33 @@ page-dashboard {
 
 .set-item{
   padding: 0px;
+}
+.set-body{
+  padding: 14px 0px;
+  margin-left: 12px;
+}
+
+.list{
+      margin: -1px 0 11px;
+  border-radius: 3px;
+}
+ion-item-sliding {
+  border-radius: 3px;
+}
+
+ion-item.item.item-block {
+    border-radius: 3px;
+}
+
+.toggle.toggle-checked .toggle-icon {
+    background-color: #2c5a8e;
+}
+.toggle.toggle-checked .toggle-inner{
+  background-color: #2c5a8e;
+}
+
+.set-whole{
+  padding: 10px;
 }
 
 }
