@@ -43,21 +43,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, MenuController } from 'ionic-angular';
 import { Validators, FormBuilder } from '@angular/forms';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { Storage } from '@ionic/storage';
 import { CommonFunctions } from '../../providers/common';
 import { ForgotPasswordPage } from '../forgot-password/forgot-password';
+import { Push } from '@ionic/cloud-angular';
+import { SignupPage } from '../signup/signup';
 var SigninPage = (function () {
-    function SigninPage(afAuth, navCtrl, navParams, formBuilder, storage, commomAlerts) {
+    function SigninPage(afAuth, menuCtrl, afDb, push, navCtrl, navParams, formBuilder, storage, commomAlerts) {
+        var _this = this;
         this.afAuth = afAuth;
+        this.menuCtrl = menuCtrl;
+        this.afDb = afDb;
+        this.push = push;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.formBuilder = formBuilder;
         this.storage = storage;
         this.commomAlerts = commomAlerts;
-        this.btnTxt = 'Signin';
+        this.btnTxt = 'Sign in';
+        this.menuCtrl.enable(false, 'myMenu');
+        this.push.register().then(function (t) {
+            return _this.push.saveToken(t);
+        }).then(function (t) {
+            console.log('Token saved:', t.token);
+            _this.token = t.token;
+            _this.storage.set('pushtoken', t.token);
+        });
     }
     SigninPage.prototype.ngOnInit = function () {
         this.signin = this.formBuilder.group({
@@ -69,10 +84,21 @@ var SigninPage = (function () {
     SigninPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad SigninPage');
     };
+    /*  ionViewDidEnter() {
+    this.platform.ready().then(() => {
+    Keyboard.disableScroll(true);
+    });
+    }
+    
+    ionViewWillLeave() {
+    this.platform.ready().then(() => {
+    Keyboard.disableScroll(false);
+    });
+    */
     SigninPage.prototype.signinForm = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
-            var result, e_1;
+            var result, endpoint, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -84,6 +110,10 @@ var SigninPage = (function () {
                     case 2:
                         result = _a.sent();
                         if (result.uid) {
+                            endpoint = this.afDb.object("/users/" + result.uid);
+                            endpoint.update({
+                                token: /*this.token*/ '123456'
+                            });
                             this.data = {
                                 uid: result.uid,
                                 refreshToken: result.refreshToken,
@@ -111,6 +141,9 @@ var SigninPage = (function () {
     SigninPage.prototype.forgotPassword = function () {
         this.navCtrl.push(ForgotPasswordPage);
     };
+    SigninPage.prototype.signUp = function () {
+        this.navCtrl.push(SignupPage);
+    };
     return SigninPage;
 }());
 SigninPage = __decorate([
@@ -118,7 +151,7 @@ SigninPage = __decorate([
         selector: 'page-signin',
         templateUrl: 'signin.html',
     }),
-    __metadata("design:paramtypes", [AngularFireAuth, NavController, NavParams, FormBuilder, Storage, CommonFunctions])
+    __metadata("design:paramtypes", [AngularFireAuth, MenuController, AngularFireDatabase, Push, NavController, NavParams, FormBuilder, Storage, CommonFunctions])
 ], SigninPage);
 export { SigninPage };
 //# sourceMappingURL=signin.js.map

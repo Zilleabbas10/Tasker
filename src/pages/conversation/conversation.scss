@@ -56,4 +56,15 @@ span.setRight {
 
 }
 
+ion-item.item.item-block {
+    border-radius: 3px;
+}
+
+.toggle.toggle-checked .toggle-icon {
+    background-color: #2c5a8e;
+}
+.toggle.toggle-checked .toggle-inner{
+  background-color: #2c5a8e;
+}
+
 }

@@ -12,16 +12,20 @@ import { NavController, NavParams, MenuController } from 'ionic-angular';
 import { Validators, FormBuilder } from '@angular/forms';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { CommonFunctions } from '../../providers/common';
+import { Push } from '@ionic/cloud-angular';
+import { Storage } from '@ionic/storage';
 var CompleteProfilePage = (function () {
-    function CompleteProfilePage(navCtrl, commomAlerts, afdb, navParams, formBuilder, menu) {
+    function CompleteProfilePage(navCtrl, storage, push, commomAlerts, afdb, navParams, formBuilder, menuCtrl) {
         this.navCtrl = navCtrl;
+        this.storage = storage;
+        this.push = push;
         this.commomAlerts = commomAlerts;
         this.afdb = afdb;
         this.navParams = navParams;
         this.formBuilder = formBuilder;
-        this.menu = menu;
+        this.menuCtrl = menuCtrl;
         this.user_id = this.navParams.get('user_id');
-        this.menu.swipeEnable(false);
+        this.menuCtrl.enable(false, 'myMenu');
     }
     CompleteProfilePage.prototype.ngOnInit = function () {
         this.completeProfileForm = this.formBuilder.group({
@@ -34,13 +38,23 @@ var CompleteProfilePage = (function () {
         console.log('ionViewDidLoad CompleteProfilePage');
     };
     CompleteProfilePage.prototype.completeProfile = function () {
+        var _this = this;
         console.log(this.completeProfileForm.value);
+        this.push.register().then(function (t) {
+            return _this.push.saveToken(t);
+        }).then(function (t) {
+            console.log('Token saved:', t.token);
+            _this.token = t.token;
+            _this.storage.set('pushtoken', t.token);
+        });
         try {
             var ref = this.afdb.database.ref().child('users');
             var data = {
                 name: this.completeProfileForm.value.name,
                 profession: this.completeProfileForm.value.profession,
-                user_id: this.user_id
+                user_id: this.user_id,
+                token: this.token /*'123456'
+*/
             };
             ref.child(this.user_id).set(data).then(function (ref) {
                 console.log(ref);
@@ -61,7 +75,7 @@ CompleteProfilePage = __decorate([
         selector: 'page-complete-profile',
         templateUrl: 'complete-profile.html',
     }),
-    __metadata("design:paramtypes", [NavController, CommonFunctions, AngularFireDatabase, NavParams, FormBuilder, MenuController])
+    __metadata("design:paramtypes", [NavController, Storage, Push, CommonFunctions, AngularFireDatabase, NavParams, FormBuilder, MenuController])
 ], CompleteProfilePage);
 export { CompleteProfilePage };
 //# sourceMappingURL=complete-profile.js.map

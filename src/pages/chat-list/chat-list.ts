@@ -86,8 +86,15 @@ export class ChatListPage {
   });
   }
 
-  startConversation(userTaskDetails, page){
-    this.navCtrl.push(ConversationPage, { details: userTaskDetails, page: page});
+  startConversation(userTaskDetails, page, ownerUser, status){
+    let Status;
+    if(status == 1){
+      Status = true;
+    }
+    else{
+      Status = false;
+    }
+    this.navCtrl.push(ConversationPage, { details: userTaskDetails, page: page, ownerUser: ownerUser, status: Status});
   }
 
 }

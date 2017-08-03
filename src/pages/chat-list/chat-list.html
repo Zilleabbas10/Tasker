@@ -20,7 +20,7 @@
 <div class="wrapper" *ngIf="appliedUserList.length > 0">
 
 <ion-list *ngFor="let chatUser of appliedUserList; let i = index; ">
-  <ion-item (click)="startConversation(chatUser, 'task_owner')">
+  <ion-item (click)="startConversation(chatUser, 'task_owner', 'owner', chatUser.status)">
     <ion-avatar item-start>
       <img src="assets/img/user.jpeg">
     </ion-avatar>
@@ -36,7 +36,7 @@
 <div class="wrapper" *ngIf="appliedList.length > 0">
 
 <ion-list *ngFor="let chatuser of appliedList; let i = index; ">
-  <ion-item (click)="startConversation(chatuser, 'task_user')" no-lines>
+  <ion-item (click)="startConversation(chatuser, 'task_user', 'user', chatuser.status)" no-lines  *ngIf="chatuser.status == 0">
     <ion-avatar item-start>
       <img src="assets/img/user.jpeg">
     </ion-avatar>

@@ -14,6 +14,12 @@
 
 <ion-content padding class="chat-view" id="chat-view">
 
+<ion-item *ngIf="ownerUser == 'owner'">
+    <ion-label>Disable Chat</ion-label>
+    <ion-toggle [(ngModel)]="showChat" checked="true" (ionChange)="openCloseChat($event)"></ion-toggle>
+</ion-item>
+
+
       <ion-row *ngIf="!(chats)">
       <ion-col col-5></ion-col>
       <ion-col col-2><ion-spinner class="text-center" item-right></ion-spinner></ion-col>

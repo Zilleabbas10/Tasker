@@ -79,7 +79,7 @@
 	  <ion-item-sliding #item *ngIf="task.status == completeTasks">
 	    <ion-item class="set-item">
 	      	<ion-row class="set-body">
-				<ion-col col-12><h2><strong>{{task.name}}</strong></h2> <p>Created date: {{task.dueDate}}</p></ion-col>
+				<ion-col col-12><h2><strong>{{task.name}}</strong></h2> <p><!-- Created date:  -->{{task.dueDate | amTimeAgo}}</p></ion-col>
 			</ion-row>
 	    </ion-item>
 

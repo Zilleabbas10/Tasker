@@ -125,7 +125,7 @@ var SignupPage = (function () {
                                 _this.commomAlerts.alert('Success', 'Signup Successfully');
                                 console.log(res);
                                 //location.reload();
-                                _this.navCtrl.push(CompleteProfilePage, { user_id: result_1.uid });
+                                _this.navCtrl.setRoot(CompleteProfilePage, { user_id: result_1.uid });
                             });
                         }
                         return [3 /*break*/, 4];

@@ -33,6 +33,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 // For push notification
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+import { MomentModule } from 'angular2-moment';
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -97,7 +98,8 @@ export const firebaseConfig = {
     AngularFireDatabaseModule,
     IonicStorageModule.forRoot(),
     CloudModule.forRoot(cloudSettings),
-    HttpModule
+    HttpModule,
+    MomentModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

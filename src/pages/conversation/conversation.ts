@@ -19,13 +19,18 @@ export class ConversationPage {
   public page: string;
   public error: string;
   public token: string;
+  public ownerUser: string;
   public loading: any;
+  public showChat: boolean;
   public chats:FirebaseListObservable<any>; 
+  public apply_jobs: FirebaseListObservable<any[]>;
   @ViewChild(Content) content: Content;
 
   constructor(public navCtrl: NavController, public loadingctrl: LoadingController, public navParams: NavParams, private storage: Storage, public pushService:ApiService, public chatsProvider:ChatsProvider, public afDb: AngularFireDatabase, private afAuth: AngularFireAuth) {
     this.details = this.navParams.get('details');
-  	this.page = this.navParams.get('page');
+    this.page = this.navParams.get('page');
+    this.ownerUser = this.navParams.get('ownerUser');
+  	this.showChat = this.navParams.get('status');
   	console.log(this.details);
 
   }
@@ -90,6 +95,42 @@ export class ConversationPage {
     }
   }
   });
+  }
+
+
+  openCloseChat(event){
+     this.showChat = event.checked;
+
+                  this.apply_jobs = this.afDb.list('/apply_jobs', {
+            query: {
+              orderByChild: 'task_id',
+              equalTo: this.details.task_id
+        }
+      });
+             this.apply_jobs.subscribe( (data) => {
+               let obj = data.find(x => x.applied_user_id === this.details.applied_user_id);
+               this.setStatus(this.showChat, obj);
+             });
+  }
+
+  setStatus(status, obj){
+
+         if(status == true){
+           console.log("yes true");
+           console.log(obj.$key);
+          let endpoint = this.afDb.object(`/apply_jobs/${obj.$key}`);
+            endpoint.update ({
+          status: '1'
+        });
+     }else{
+
+           console.log("No False");
+           console.log(obj.$key);
+                 let endpoint = this.afDb.object(`/apply_jobs/${obj.$key}`);
+            endpoint.update ({
+          status: '0'
+        });
+     }
   }
 
   getChat(user_id, taskOwnerAppliedId){

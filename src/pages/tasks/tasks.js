@@ -27,7 +27,7 @@ var TasksPage = (function () {
         this.result = [];
         this.taskList = [];
         this.pageName = '';
-        this.btntxt = 'Save';
+        this.btntxt = 'Post';
         this.tasks = afDb.list('/tasks');
         this.pageName = this.navParams.get('pageName');
         this.taskData = this.navParams.get('task');
@@ -36,13 +36,16 @@ var TasksPage = (function () {
         this.storage.get('data').then(function (val) {
             _this.userId = val.uid;
         });
+        var today = new Date();
+        console.log(today);
+        this.calculateDateTime(today);
     }
     TasksPage.prototype.ngOnInit = function () {
         this.taskForm = this.formBuilder.group({
             name: ['', [Validators.required]],
             description: ['', [Validators.required]],
-            profession: ['', [Validators.required]],
-            date: ['', [Validators.required]],
+            profession: ['', [Validators.required]] /*,
+            date: ['', [Validators.required]],*/
         });
         if (this.pageName == 'Update') {
             this.btntxt = 'Update';
@@ -53,14 +56,48 @@ var TasksPage = (function () {
     TasksPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad TasksPage');
     };
+    TasksPage.prototype.calculateDateTime = function (date) {
+        this.getCurrentDateTime = String(date);
+        console.log(this.getCurrentDateTime);
+        var strMnth = this.getCurrentDateTime.substring(4, 7);
+        var day = this.getCurrentDateTime.substring(8, 10);
+        var year = this.getCurrentDateTime.substring(11, 15);
+        var strMonth;
+        if (strMnth == 'Jan')
+            strMonth = '01';
+        else if (strMnth == 'Feb')
+            strMonth = '02';
+        else if (strMnth == 'Mar')
+            strMonth = '03';
+        else if (strMnth == 'Apr')
+            strMonth = '04';
+        else if (strMnth == 'May')
+            strMonth = '05';
+        else if (strMnth == 'Jun')
+            strMonth = '06';
+        else if (strMnth == 'Jul')
+            strMonth = '07';
+        else if (strMnth == 'Aug')
+            strMonth = '08';
+        else if (strMnth == 'Sep')
+            strMonth = '09';
+        else if (strMnth == 'Oct')
+            strMonth = '10';
+        else if (strMnth == 'Nov')
+            strMonth = '11';
+        else if (strMnth == 'Dec')
+            strMonth = '12';
+        this.finalCurrentDate = year + '-' + strMonth + '-' + day;
+        console.log(this.finalCurrentDate);
+    };
     TasksPage.prototype.patchValues = function (data) {
         console.log(this.taskForm);
         console.log(data.name, data.description, data.dueDate);
         this.taskForm.patchValue({
             name: data.name,
             description: data.description,
-            profession: data.profession,
-            date: data.dueDate
+            profession: data.profession /*,
+            date: data.dueDate*/
         });
     };
     TasksPage.prototype.tasksForm = function () {
@@ -69,7 +106,7 @@ var TasksPage = (function () {
         console.log(this.taskForm);
         if (this.pageName == 'Add') {
             console.log(this.taskForm.value);
-            this.tasks.push({ name: this.taskForm.value.name, description: this.taskForm.value.description, profession: this.taskForm.value.profession, dueDate: this.taskForm.value.date, user_id: this.userId, status: false }).then(function (res) {
+            this.tasks.push({ name: this.taskForm.value.name, description: this.taskForm.value.description, profession: this.taskForm.value.profession, dueDate: /*this.taskForm.value.date*/ this.finalCurrentDate, user_id: this.userId, status: false }).then(function (res) {
                 if (res.path.o[1] != undefined || res.path.o[1] != null) {
                     _this.taskForm.reset();
                     _this.commomAlerts.alert('Success', 'Data Inserted Successfully');
@@ -84,11 +121,11 @@ var TasksPage = (function () {
             });
         }
         else {
-            this.tasks.update(this.taskId, {
+            var endpoint = this.afDb.object("/tasks/" + this.taskId);
+            endpoint.update({
                 name: this.taskForm.value.name,
                 description: this.taskForm.value.description,
-                profession: this.taskForm.value.profession,
-                dueDate: this.taskForm.value.date
+                profession: this.taskForm.value.profession
             }).then(function (res) {
                 _this.commomAlerts.alert('Success', 'Task Updated Successfully');
                 _this.navCtrl.pop();
@@ -96,6 +133,18 @@ var TasksPage = (function () {
             }, function (error) {
                 console.log(error);
             });
+            /*  		 this.tasks.update(this.taskId, {
+                        name: this.taskForm.value.name,
+                        description: this.taskForm.value.description,
+                        profession: this.taskForm.value.profession,
+                        dueDate: this.taskForm.value.date
+                      }).then( (res) => {
+                        this.commomAlerts.alert('Success', 'Task Updated Successfully');
+                        this.navCtrl.pop();
+                        console.log(res);
+                      }, (error) => {
+                        console.log(error);
+                      });*/
         }
     };
     return TasksPage;

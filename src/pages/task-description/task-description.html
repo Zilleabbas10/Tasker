@@ -16,7 +16,7 @@
   <ion-card-content>
     <p><strong>Profession: </strong>{{taskdetails.profession}}</p>
     <p><strong>Description: </strong>{{taskdetails.description}}</p>
-    <p><strong>Date: </strong>{{taskdetails.dueDate}}</p>
+    <p><!-- <strong>Date: </strong> -->{{taskdetails.dueDate | amTimeAgo}}</p>
     <ion-row>
     	<ion-col col-9></ion-col>
     	<ion-col col-3>

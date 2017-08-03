@@ -8,25 +8,78 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController, ModalController } from 'ionic-angular';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { TasksPage } from '../tasks/tasks';
+import { TaskDescriptionPage } from '../task-description/task-description';
+import { CommonFunctions } from '../../providers/common';
+import { Storage } from '@ionic/storage';
+import { AngularFireAuth } from 'angularfire2/auth';
 var AllTasksPage = (function () {
-    function AllTasksPage(navCtrl, navParams) {
+    //private showCompleteButton: boolean = false;
+    function AllTasksPage(navCtrl, afAuth, commomAlerts, navParams, afDb, alertCtrl, loadingctrl, modalCtrl, storage) {
         var _this = this;
         this.navCtrl = navCtrl;
+        this.afAuth = afAuth;
+        this.commomAlerts = commomAlerts;
         this.navParams = navParams;
-        this.storage.get('data').then(function (val) {
-            _this.user_id = val.uid;
-            _this.tasks = afDb.list('/tasks', {
-                query: {
-                    orderByChild: 'user_id',
-                    equalTo: _this.user_id
-                }
-            });
-            _this.getTasks(_this.tasks);
+        this.afDb = afDb;
+        this.alertCtrl = alertCtrl;
+        this.loadingctrl = loadingctrl;
+        this.modalCtrl = modalCtrl;
+        this.storage = storage;
+        this.result = [];
+        this.taskList = [];
+        this.completeTasks = false;
+        this.afAuth.auth.onAuthStateChanged(function (user) {
+            console.log(user);
+            if (user) {
+                _this.user_id = user.uid;
+                _this.user = _this.afDb.list('/users', {
+                    query: {
+                        orderByChild: 'user_id',
+                        equalTo: user.uid
+                    }
+                });
+                _this.getUser(_this.user);
+            }
         });
     }
     AllTasksPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad AllTasksPage');
+    };
+    AllTasksPage.prototype.getUser = function (user) {
+        var _this = this;
+        user.subscribe(function (snapshots) {
+            console.log(snapshots);
+            _this.getTasks(snapshots[0].profession);
+        });
+    };
+    AllTasksPage.prototype.getTasks = function (profession) {
+        var _this = this;
+        this.tasks = this.afDb.list('/tasks', {
+            query: {
+                orderByChild: 'profession',
+                equalTo: profession
+            }
+        });
+        this.loading = this.loadingctrl.create({
+            content: 'Loading...',
+        });
+        this.loading.present();
+        this.tasks.subscribe(function (snapshots) {
+            _this.loading.dismissAll();
+            _this.taskList = [];
+            snapshots.forEach(function (snapshot) {
+                if (snapshot.user_id != _this.user_id) {
+                    _this.result = _this.taskList.push(snapshot);
+                }
+            });
+            console.log(_this.taskList);
+        });
+    };
+    AllTasksPage.prototype.showDetails = function (task) {
+        this.navCtrl.push(TaskDescriptionPage, { task: task });
     };
     AllTasksPage.prototype.updateTask = function (taskId, task) {
         console.log(task, taskId);
@@ -74,7 +127,7 @@ AllTasksPage = __decorate([
         selector: 'page-all-tasks',
         templateUrl: 'all-tasks.html',
     }),
-    __metadata("design:paramtypes", [NavController, NavParams])
+    __metadata("design:paramtypes", [NavController, AngularFireAuth, CommonFunctions, NavParams, AngularFireDatabase, AlertController, LoadingController, ModalController, Storage])
 ], AllTasksPage);
 export { AllTasksPage };
 //# sourceMappingURL=all-tasks.js.map

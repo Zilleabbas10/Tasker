@@ -12,10 +12,10 @@ import { NavController, NavParams, AlertController, LoadingController, ModalCont
 import { AngularFireDatabase } from 'angularfire2/database';
 import { TasksPage } from '../tasks/tasks';
 import { CommonFunctions } from '../../providers/common';
-import { Storage } from '@ionic/storage';
 import { AngularFireAuth } from 'angularfire2/auth';
 var DashboardPage = (function () {
-    function DashboardPage(navCtrl, afAuth, commomAlerts, navParams, afDb, alertCtrl, loadingctrl, modalCtrl, storage) {
+    //private showCompleteButton: boolean = false;
+    function DashboardPage(navCtrl, afAuth, commomAlerts, navParams, afDb, alertCtrl, loadingctrl, modalCtrl) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.afAuth = afAuth;
@@ -25,55 +25,35 @@ var DashboardPage = (function () {
         this.alertCtrl = alertCtrl;
         this.loadingctrl = loadingctrl;
         this.modalCtrl = modalCtrl;
-        this.storage = storage;
         this.result = [];
         this.taskList = [];
         this.completeTasks = false;
-        this.showCompleteButton = false;
         this.afAuth.auth.onAuthStateChanged(function (user) {
             console.log(user);
             if (user) {
-                _this.ShowCompleteBtn(user.uid);
+                //this.ShowCompleteBtn(user.uid); //show and hide task complete button
                 _this.user = _this.afDb.list('/users', {
                     query: {
                         orderByChild: 'user_id',
                         equalTo: user.uid
                     }
                 });
-                _this.getUser(_this.user);
+                _this.loading = _this.loadingctrl.create({
+                    content: 'Loading...',
+                });
+                _this.loading.present();
+                _this.getUser(_this.user); // function run to get value from (this.user observeable) because cant directly access its values
             }
         });
-        /*    this.tasks = afDb.list('/tasks');
-            this.getTasks(this.tasks);*/
-        /*  	this.storage.get('data').then((val) => {
-              this.user_id = val.uid;
-              this.tasks = afDb.list('/tasks', {
-                    query: {
-                      orderByChild: 'user_id',
-                      equalTo: this.user_id
-                }
-              });
-            this.getTasks(this.tasks);
-            });*/
     }
     DashboardPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad DashboardPage');
-    };
-    DashboardPage.prototype.ShowCompleteBtn = function (user_id) {
-        var _this = this;
-        console.log('Loggedin user id ' + user_id);
-        this.storage.get('data').then(function (val) {
-            console.log('Database ' + val.uid);
-            if (val.uid == user_id) {
-                _this.showCompleteButton = true;
-            }
-        });
     };
     DashboardPage.prototype.getUser = function (user) {
         var _this = this;
         user.subscribe(function (snapshots) {
             console.log(snapshots);
-            _this.getTasks(snapshots[0].user_id);
+            _this.getTasks(snapshots[0].user_id); //pass value on which you want to filter data from tasks table (here it is getting data on user id)
         });
     };
     DashboardPage.prototype.getTasks = function (user_id) {
@@ -84,10 +64,6 @@ var DashboardPage = (function () {
                 equalTo: user_id
             }
         });
-        this.loading = this.loadingctrl.create({
-            content: 'Loading...',
-        });
-        this.loading.present();
         this.tasks.subscribe(function (snapshots) {
             _this.loading.dismissAll();
             _this.taskList = [];
@@ -107,47 +83,6 @@ var DashboardPage = (function () {
         var updateTaskModal = this.modalCtrl.create(TasksPage, { pageName: 'Update', taskId: taskId, task: task });
         updateTaskModal.present();
     };
-    /*    updateTask(taskId, name, description, date) {
-          console.log(taskId, date);
-        let prompt = this.alertCtrl.create({
-          title: 'Update Task',
-          inputs: [
-            {
-              name: 'name',
-              value: name,
-              placeholder: 'Name'
-            },
-            {
-              name: 'description',
-              value: description,
-              placeholder: 'Description'
-            },
-            {
-              name: 'date',
-              type: 'date',
-              value: date,
-            },
-          ],
-          buttons: [
-            {
-              text: 'Cancel',
-              handler: data => {
-              }
-            },
-            {
-              text: 'Save',
-              handler: data => {
-              this.tasks.update(taskId, {
-                name: data.name,
-                descripton: data.description,
-                dueDate: data.date
-              });
-              }
-            }
-          ]
-        });
-        prompt.present();
-      }*/
     DashboardPage.prototype.deleteTask = function (taskId, name, description, date) {
         var _this = this;
         console.log(taskId, name);
@@ -170,7 +105,28 @@ var DashboardPage = (function () {
         });
         confirm.present();
     };
-    DashboardPage.prototype.completeTask = function (taskId) {
+    DashboardPage.prototype.completeTask = function (taskId, name, description, date) {
+        var _this = this;
+        var confirm = this.alertCtrl.create({
+            title: 'Confirm Complete',
+            message: 'Do you want to complete Task ?? <br><strong>Name:</strong>&nbsp;' + name + '&nbsp;<br><strong>Description:</strong>&nbsp;' + description + '&nbsp;<br><strong>Due Date:</strong>&nbsp;' + date,
+            buttons: [
+                {
+                    text: 'Disagree',
+                    handler: function () {
+                    }
+                },
+                {
+                    text: 'Agree',
+                    handler: function () {
+                        _this.savecompleteTask(taskId);
+                    }
+                }
+            ]
+        });
+        confirm.present();
+    };
+    DashboardPage.prototype.savecompleteTask = function (taskId) {
         var _this = this;
         console.log('Complete Function');
         this.tasks.update(taskId, {
@@ -193,7 +149,14 @@ DashboardPage = __decorate([
         selector: 'page-dashboard',
         templateUrl: 'dashboard.html',
     }),
-    __metadata("design:paramtypes", [NavController, AngularFireAuth, CommonFunctions, NavParams, AngularFireDatabase, AlertController, LoadingController, ModalController, Storage])
+    __metadata("design:paramtypes", [NavController,
+        AngularFireAuth,
+        CommonFunctions,
+        NavParams,
+        AngularFireDatabase,
+        AlertController,
+        LoadingController,
+        ModalController])
 ], DashboardPage);
 export { DashboardPage };
 //# sourceMappingURL=dashboard.js.map

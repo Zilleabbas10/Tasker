@@ -21,9 +21,9 @@
 <!--   <ion-card-header>
     Ionic Development
   </ion-card-header> -->
-  <ion-card-content (click)="showDetails(task)">
+  <ion-card-content>
       <ion-row>
-    	<ion-col col-9><h2><strong>{{task.name}}</strong></h2> <p>Created date: {{task.dueDate}}</p></ion-col>
+    	<ion-col col-9><h2><strong>{{task.name}}</strong></h2> <p><!-- Created date:  -->{{task.dueDate | amTimeAgo}}</p></ion-col>
     	<ion-col col-3>
     	<button ion-button class="apply-btn" color="header" small item-left (click)="showDetails(task)">View</button>
     	</ion-col>
